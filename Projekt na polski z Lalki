@@ -32,7 +32,7 @@ def wyslij_do_drukarki(nazwa_pliku):
 
 
 def main():
-    print("Wpisz tekst do zaszyfrowania. Wciśnij Shift+Enter, aby dodać nową linię, a Enter aby zakończyć:")
+    print("Wpisz tekst do zaszyfrowania. Wciśnij Enter, aby dodać nową linię, a aby zakończyć - Enter w pustej lini:")
     tekst = "\n".join(iter(input, ""))  # Wprowadzenie wieloliniowego tekstu
 
     jezyk = input("Wybierz język szyfrowania (PL/EN): ").strip().upper()
