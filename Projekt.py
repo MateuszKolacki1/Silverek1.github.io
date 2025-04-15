@@ -1,0 +1,61 @@
+import os
+import platform
+
+
+
+def szyfr_cezara(tekst, przesuniecie=3):
+    zaszyfrowany_tekst = ""
+    for znak in tekst:
+        if znak.isalpha():
+            przesuniecie_znaku = ord('A') if znak.isupper() else ord('a')
+            zaszyfrowany_tekst += chr((ord(znak) - przesuniecie_znaku + przesuniecie) % 26 + przesuniecie_znaku)
+        else:
+            zaszyfrowany_tekst += znak
+    return zaszyfrowany_tekst
+
+
+def zapisz_do_pliku(nazwa_pliku, tresc):
+    with open(nazwa_pliku, "w", encoding="utf-8") as plik:
+        plik.write(tresc)
+    print(f"Zaszyfrowany tekst zapisano do {nazwa_pliku}")
+
+
+def wyslij_do_drukarki(nazwa_pliku):
+    if platform.system() == "Windows":
+        os.startfile(nazwa_pliku, "print")
+    elif platform.system() == "Linux":
+        os.system(f"lp {nazwa_pliku}")
+    elif platform.system() == "Darwin":  # macOS
+        os.system(f"lpr {nazwa_pliku}")
+    else:
+        print("Nieznany system operacyjny, nie można wysłać do drukarki.")
+
+
+def main():
+    print("Wpisz tekst do zaszyfrowania. Wciśnij Enter, aby dodać nową linię, a aby zakończyć - Enter w pustej lini:")
+    tekst = "\n".join(iter(input, ""))  # Wprowadzenie wieloliniowego tekstu
+
+    jezyk = input("Wybierz język szyfrowania (PL/EN): ").strip().upper()
+
+    if jezyk == "PL":
+        przesuniecie = 3  # Przykładowe przesunięcie
+    elif jezyk == "EN":
+        przesuniecie = 5  # Inne przesunięcie dla angielskiego
+    else:
+        print("Nieznany język, domyślne przesunięcie: 3")
+        przesuniecie = 3
+
+    zaszyfrowany_tekst = szyfr_cezara(tekst, przesuniecie)
+    print("\nZaszyfrowany tekst:\n")
+    print(zaszyfrowany_tekst)
+
+    nazwa_pliku = "zaszyfrowany_tekst.txt"
+    zapisz_do_pliku(nazwa_pliku, zaszyfrowany_tekst)
+
+    drukuj = input("Czy wysłać plik do drukarki? (T/N): ").strip().upper()
+    if drukuj == "T":
+        wyslij_do_drukarki(nazwa_pliku)
+
+
+if __name__ == "__main__":
+    main()
